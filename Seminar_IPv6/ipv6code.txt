@@ -1,0 +1,197 @@
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+
+namespace IPv6_Shortener
+{
+    public partial class Form1 : Form
+    {
+        public TextBox t1;
+        public TextBox t2;
+        public Button Shorten;
+        public string a;
+        public Form1()
+        {
+            InitializeComponent();
+            t1 = text1;
+            t2 = text2;
+        }
+
+        private void label1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label2_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void textBox1_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            StringBuilder a = new StringBuilder(t1.Text);
+
+            if (a.Length == 39 && a[4] == ':' && a[9] == ':' && a[14] == ':' && a[19] == ':' && a[24] == ':' && a[29] == ':' && a[34] == ':')
+            {
+                //Postavi cetiri nule u jednu nulu
+                a = a.Replace("0000", "0");
+
+
+                //Ako su nule prvi brojevi u ta cetiri broja
+                for (int i = 0; i < a.Length - 3; i++)
+                {
+                    if (a[i] == '0' && a[i + 1] == '0' && a[i + 2] == '0' && a[i + 3] != '0' && a[i + 3] != ':')
+                    {
+                        a[i] = ' ';
+                        a[i + 1] = ' ';
+                        a[i + 2] = ' ';
+                        a = a.Replace(" ", "");
+                    }
+
+                    else if (a[i] == '0' && a[i + 1] == '0' && a[i + 2] != '0' && a[i + 2] != ':')
+                    {
+                        a[i] = ' ';
+                        a[i + 1] = ' ';
+                        a = a.Replace(" ", "");
+                    }
+
+                    else if (a[i] == '0' && a[i + 1] != '0' && a[i + 1] != ':')
+                    {
+                        a[i] = ' ';
+                        a = a.Replace(" ", "");
+                    }
+
+                }
+
+
+                //spoji nule
+                for (int i = 2; i < a.Length; i++)
+                {
+
+                    if (a[i - 2] == ':' && a[i - 1] == ':' && a[i] == '0' && a[i + 1] == ':')
+                    {
+                        a[i] = ' ';
+                        a[i - 1] = ' ';
+                        a = a.Replace(" ", "");
+                    }
+
+
+                }
+
+                //spoji nule broj dva
+                for (int i = 3; i < a.Length - 3; i++)
+                {
+                    if (a[i - 3] == ':' && a[i - 2] == '0' && a[i - 1] == ':' && a[i] == '0' && a[i + 1] == ':')
+                    {
+                        a[i - 2] = ' ';
+                        a[i - 1] = ' ';
+                        a[i] = ' ';
+                        a = a.Replace(" ", "");
+                    }
+                }
+
+
+                //spoji nule broj tri
+                for (int i = 2; i < a.Length; i++)
+                {
+
+                    if (a[i - 2] == ':' && a[i - 1] == ':' && a[i] == '0' && a[i + 1] == ':')
+                    {
+                        a[i] = ' ';
+                        a[i - 1] = ' ';
+                        a = a.Replace(" ", "");
+                    }
+
+
+                }
+
+                //spoji nule broj cetiri
+                for (int i = 3; i < a.Length - 3; i++)
+                {
+                    if (a[i - 3] == ':' && a[i - 2] == '0' && a[i - 1] == ':' && a[i] == '0' && a[i + 1] == ':')
+                    {
+                        a[i - 2] = ' ';
+                        a[i - 1] = ' ';
+                        a[i] = ' ';
+                        a = a.Replace(" ", "");
+                    }
+                }
+
+
+                for (int i = 3; i < a.Length; i++)
+                {
+                    a = a.Replace(":::", "::");
+                }
+
+
+                //prva cetiri broja u adresi
+                if (a[0] == '0' && a[1] == ':' && a[2] == '0' && a[3] == ':')
+                {
+                    a[0] = ' ';
+                    a[1] = ' ';
+                    a[2] = ':';
+                    a = a.Replace(" ", "");
+                }
+
+
+                //ako je nula u prvom dijelu
+                if (a[0] == '0' && a[1] == ':' && a[2] == ':')
+                {
+                    a[0] = ' ';
+                    a = a.Replace(" ", "");
+                }
+
+
+                //zadnji dio problem
+                for (int i = 3; i < a.Length - 3; i++)
+                {
+                    if (a[i] == ':' && a[i + 1] == ':' && a[i + 2] == '0')
+                    {
+                        a[i + 2] = ' ';
+                        a = a.Replace(" ", "");
+                    }
+
+                    else if (a[i] == ':' && a[i + 1] == '0' && a[i + 2] == ':' && a[i + 3] == '0')
+                    {
+                        a[i + 1] = ' ';
+                        a[i + 3] = ' ';
+                        a = a.Replace(" ", "");
+                    }
+                }
+
+
+                a = a.Replace(":::", "::");
+                a = a.Replace("::0", "::");
+                a = a.Replace(":::", "::");
+                a = a.Replace("::0", "::");
+
+
+                //zavrsetak programa
+                a = a.Replace(" ", "");
+                t2.Text = a.ToString();
+            }
+            else MessageBox.Show("Wrong input, please input the correct IPv6 address", "WARNING!");
+        }
+
+        private void HELP_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("You must input full IPv6 address\nFor example: 1234:5678:0000:1234:5678:0000:1234:5678", "HELP");
+        }
+    }
+}
